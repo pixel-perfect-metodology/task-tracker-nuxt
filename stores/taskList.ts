@@ -12,12 +12,18 @@ const Status = {
 
 type TaskStatus = keyof typeof Status;
 
+type Attachment = {
+  uuid: string;
+  type?: string;
+  url: string;
+};
+
 type Task = {
   uuid: string;
   title: string;
 
   description?: string;
-  attachments?: string[];
+  attachments?: Attachment[];
 
   status?: TaskStatus;
 
@@ -28,12 +34,19 @@ type Task = {
   previousVersionUuid?: string;
 };
 
+interface TaskListState {
+  tasks: Task[];
+  filter: {
+    status: TaskStatus | undefined;
+  };
+}
+
 export const useTaskList = defineStore('taskList', {
-  state: () => ({
-    tasks: [] as Task[],
+  state: (): TaskListState => ({
+    tasks: [],
 
     filter: {
-      status: '',
+      status: undefined,
     },
   }),
 
@@ -87,13 +100,16 @@ export const useTaskList = defineStore('taskList', {
       const newTask = {
         uuid: uuid(),
         title,
+        status: Status.NEW,
         createdAt: timemarkNow,
         updatedAt: timemarkNow,
       };
       this.tasks.push(newTask);
     },
-    remove(uuid: string) {
-      const index = this.tasks.findIndex((task) => task.uuid === uuid);
+    remove(taskToRemove: Task) {
+      const index = this.tasks.findIndex(
+        (task) => task.uuid === taskToRemove.uuid
+      );
       this.tasks.splice(index, 1);
     },
 

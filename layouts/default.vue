@@ -4,10 +4,10 @@
     <Title>Task Tracker</Title>
   </Head>-->
 
-  <header>
+  <!-- <header>
     <h1>Task Tracker</h1>
     <p>Simple task tracker</p>
-  </header>
+  </header> -->
 
   <template v-if="route.path !== '/'">
     <router-link to="/">→ Back Home</router-link>
@@ -16,7 +16,7 @@
 
   <slot />
 
-  <footer>// footer</footer>
+  <!-- <footer>// footer</footer> -->
 </template>
 
 <script setup lang="ts">
