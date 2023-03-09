@@ -3,12 +3,24 @@
     <!-- <h1>Tasks</h1> -->
     <!-- <h2>Tasks</h2> -->
 
-    <p v-if="status" data-testid="task-list-filter-status">
-      Filtered by status: <b>{{ status }}</b>
+
+    <p>
+    <div>Filter by status:</div>
+    <ul v-for="statusName in allStatusNames">
+      <ol @click="setFilterStatus(statusName)">{{statusName}}</ol>
+    </ul>
     </p>
+
+    <p v-if="filter.status" data-testid="task-list-filter-status">
+      Filtered by status: <b>{{ filter.status }}</b>
+    </p>
+
     <p data-testid="task-list-counters">
-      Tasks: filtered: {{ filteredTasks?.length || 0 }} / total:
-      {{ tasks?.length || 0 }}
+      <span>Tasks: </span>
+      <span v-if="status">
+        filtered: {{ filteredTasks?.length || 0 }} / total:
+      </span>
+      <span>{{ tasks?.length || 0 }}</span>
     </p>
 
     <button @click="add('new task title')" data-testid="add-task-button">
@@ -88,11 +100,13 @@
 <script setup lang="ts">
 const taskListStore = useTaskList();
 const {
+  allStatusNames,
   tasks,
   filteredTasks,
-  filter: { status },
+  filter,
   add,
   remove,
+  setFilterStatus
 } = taskListStore;
 
 let selectedTask = undefined;
@@ -113,9 +127,9 @@ const openChangeStatusModal = (task) => {
   // todo
 };
 
-// if (process.server) {
-//   counter.n = 20
-// }
+if (process.server) {
+  add('#1 demo task');
+}
 </script>
 
 <style scoped>

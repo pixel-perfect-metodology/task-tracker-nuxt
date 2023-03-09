@@ -51,6 +51,9 @@ export const useTaskList = defineStore('taskList', {
   }),
 
   getters: {
+    allStatusNames() {
+      return [].concat(Object.keys(Status), '') as string[];
+    },
     newTasks(state) {
       return state.tasks.filter((task) => task.status === Status.NEW);
     },
@@ -90,7 +93,7 @@ export const useTaskList = defineStore('taskList', {
         return this.unfinishedTasks;
       }
 
-      return this.tasks;
+      return [];
     },
   },
 
@@ -113,8 +116,8 @@ export const useTaskList = defineStore('taskList', {
       this.tasks.splice(index, 1);
     },
 
-    changeFilterParameterStatus(status: TaskStatus) {
-      this.filter.status = status;
+    setFilterStatus(statusName: TaskStatus) {
+      this.filter.status = statusName;
     },
   },
 });
