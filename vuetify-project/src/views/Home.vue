@@ -110,7 +110,6 @@ const filter = {
 };
 
 const onChangeFilterTaskStatus = (newStatus) => {
-  console.log({ newStatus, filter });
   filter.status = newStatus;
   console.log({ newStatus, filter });
 };
