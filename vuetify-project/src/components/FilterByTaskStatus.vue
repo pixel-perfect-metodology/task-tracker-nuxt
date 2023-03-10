@@ -10,8 +10,8 @@
           :ripple="false"
           link
           label
-          variant="text"
-          @click="$emit('change-filter-task-status', statusName)"
+          :variant="statusName === selectedStatusName ? 'elevated' : 'text'"
+          @click="$emit('change', statusName)"
         >
           {{ statusName?.toLowerCase().replace(/\_/gi, ' ') }}
         </v-chip>
@@ -20,7 +20,20 @@
   </v-row>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+interface Props {
+  status?: string;
+}
+const { status } = withDefaults(defineProps<Props>(), {
+  status: 'ALL',
+});
+
+const emit = defineEmits<{
+  (e: 'change', statusName: string): void;
+  // (e: 'change', id: number): void
+  // (e: 'update', value: string): void
+}>();
+
 const statusNames = [
   'ALL',
   'NEW',
@@ -29,6 +42,5 @@ const statusNames = [
   'READY_TO_DEPLOY',
   'DONE',
 ];
-const selectedStatusName = 'ALL';
-// selectedStatusName == statusName ? false : "text"
+const selectedStatusName = status || 'ALL';
 </script>

@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <FilterByTaskStatus @change-filter-task-status="onChangeFilterTaskStatus" />
+    <FilterByTaskStatus
+      @change="onChangeFilterTaskStatus"
+      :status="filter.status"
+    />
 
     <v-row>
       <template v-for="n in 4" :key="n">
@@ -88,12 +91,11 @@
   </v-container>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import FilterByTaskStatus from '@/components/FilterByTaskStatus';
 
 const data = {
   cards: ['Today', 'Yesterday'],
-  drawer: null,
   links: [
     ['mdi-inbox-arrow-down', 'Inbox'],
     ['mdi-send', 'Send'],
@@ -101,13 +103,15 @@ const data = {
     ['mdi-alert-octagon', 'Spam'],
   ],
 };
-const { cards, drawer, links } = data;
+const { cards, links } = data;
 
 const filter = {
   status: '',
 };
 
 const onChangeFilterTaskStatus = (newStatus) => {
+  console.log({ newStatus, filter });
   filter.status = newStatus;
+  console.log({ newStatus, filter });
 };
 </script>
