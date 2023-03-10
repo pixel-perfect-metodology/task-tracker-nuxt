@@ -5,10 +5,10 @@
 
 
     <p>
-    <div>Filter by status:</div>
-    <ul v-for="statusName in allStatusNames">
-      <ol @click="setFilterStatus(statusName)">{{statusName}}</ol>
-    </ul>
+      <div>Filter by status:</div>
+      <ul v-for="statusName in allStatusNames">
+        <ol @click="setFilterStatus(statusName)">{{statusName}}</ol>
+      </ul>
     </p>
 
     <p v-if="filter.status" data-testid="task-list-filter-status">
