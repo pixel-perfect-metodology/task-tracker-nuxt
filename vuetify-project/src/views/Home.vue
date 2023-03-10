@@ -1,5 +1,7 @@
 <template>
   <v-container fluid>
+    <FilterByTaskStatus @change-filter-task-status="onChangeFilterTaskStatus" />
+
     <v-row>
       <template v-for="n in 4" :key="n">
         <v-col class="mt-2" cols="12">
@@ -7,7 +9,9 @@
         </v-col>
 
         <v-col v-for="j in 6" :key="`${n}${j}`" cols="6" md="2">
-          <v-sheet height="150"></v-sheet>
+          <v-sheet height="150">
+            <v-progress-linear model-value="20"></v-progress-linear>
+          </v-sheet>
         </v-col>
       </template>
     </v-row>
@@ -85,6 +89,8 @@
 </template>
 
 <script lang="ts" setup>
+import FilterByTaskStatus from '@/components/FilterByTaskStatus';
+
 const data = {
   cards: ['Today', 'Yesterday'],
   drawer: null,
@@ -96,4 +102,12 @@ const data = {
   ],
 };
 const { cards, drawer, links } = data;
+
+const filter = {
+  status: '',
+};
+
+const onChangeFilterTaskStatus = (newStatus) => {
+  filter.status = newStatus;
+};
 </script>

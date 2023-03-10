@@ -4,7 +4,7 @@
     <!--  -->
     <!-- </v-navigation-drawer> -->
     <!-- <v-navigation-drawer absolute rail color="grey-lighten-3"> -->
-      <v-navigation-drawer v-model="drawer" class="pt-4" color="grey-lighten-3">
+    <v-navigation-drawer v-model="drawer" class="pt-4" color="grey-lighten-3">
       <!-- <v-navigation-drawer
       v-model="drawer"
       class="pt-4"
@@ -40,7 +40,7 @@
       ></v-avatar> -->
     </v-navigation-drawer>
 
-    <HeaderNavbar @change-drawer-visibility="() => (drawer = !drawer)" />
+    <HeaderNavbar @change-drawer-visibility="drawer = !drawer" />
 
     <default-view />
   </v-app>
