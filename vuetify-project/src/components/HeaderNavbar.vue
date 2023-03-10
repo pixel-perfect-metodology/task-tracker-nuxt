@@ -34,7 +34,7 @@
 <script>
 export default {
   // props: ['drawer'],
-  emits: ['change-drawer-visibility']
+  emits: ['change-drawer-visibility'],
   data: () => ({
     links: ['Dashboard', 'Messages', 'Profile', 'Updates'],
   }),
