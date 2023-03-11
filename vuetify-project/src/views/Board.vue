@@ -1,20 +1,45 @@
 <template>
-  <v-container fluid>
-    <v-row>
+  <v-container fluid class="fill-height d-flex align-start">
+    <v-row class="fill-height d-flex align-start">
       <template v-for="columnName in columns" :key="columnName">
-        <v-col cols="2">
+        <v-col cols="2" class="fill-height">
           <strong style="text-transform: capitalize">{{ columnName }}</strong>
 
-          <template v-if="!tasks[columnName]?.length">
-            <v-sheet height="150"> no tasks </v-sheet>
-          </template>
-
-          <template v-for="task in tasks[columnName]" :key="task.title">
-            <v-sheet height="150" rounded>
-              <v-progress-linear model-value="20"></v-progress-linear>
-              <div>{{ task.title }}</div>
+          <div style="position: absolute">
+            <v-sheet
+              class="pa-2 bg-grey-lighten-3 text-disabled"
+              min-height="150"
+              rounded
+            >
+              <sub> no tasks </sub>
             </v-sheet>
-          </template>
+          </div>
+
+          <draggable
+            :list="tasks[columnName]"
+            group="tasks"
+            @start="drag = true"
+            @end="drag = false"
+            item-key="title"
+            style="position: relative"
+            class="fill-height d-flex flex-column"
+          >
+            <template #item="{ element: task, index }">
+              <v-sheet class="mb-2" min-height="150" rounded>
+                <template
+                  v-if="['in progress', 'blocked'].includes(columnName)"
+                >
+                  <v-progress-linear :model-value="task.progress" />
+                </template>
+                <div class="pa-2">
+                  <b
+                    ><sub> Task-{{ task.id }} </sub></b
+                  >
+                  {{ task.title }}
+                </div>
+              </v-sheet>
+            </template>
+          </draggable>
         </v-col>
       </template>
     </v-row>
@@ -22,19 +47,19 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable';
+
 const { columns, tasks } = {
   columns: ['todo', 'blocked', 'in progress', 'in test', 'acceptance', 'done'],
   tasks: {
     todo: [
-      { title: 'create markup for reports page' },
-      { title: 'create demo data for backlog page' },
-      { title: 'create demo data for board page' },
+      { id: 5, title: 'create markup for reports page' },
+      { id: 6, title: 'create demo data for backlog page' },
+      { id: 7, title: 'create demo data for board page' },
     ],
-    blocked: [
-      // empty
-    ],
+    blocked: [{ id: 4, title: 'create markup for reports page', progress: 10 }],
     ['in progress']: [
-      { title: 'create markup for board page', progress: 20 },
+      { id: 3, title: 'create markup for board page', progress: 40 },
       // only 1 per time
     ],
     ['in test']: [
@@ -45,7 +70,10 @@ const { columns, tasks } = {
       // empty
       // only 1 per time
     ],
-    done: [{ title: 'create markup for backlog page' }],
+    done: [
+      { id: 2, title: 'create markup for backlog page' },
+      { id: 1, title: 'create markup of layout page' },
+    ],
   },
 };
 </script>

@@ -16,7 +16,10 @@
       <template v-for="link in links" :key="link">
         <template v-if="link.url && link.label">
           <router-link :to="link.url">
-            <v-btn variant="text">
+            <v-btn
+              :variant="route.path === link.url ? 'tonal' : 'text'"
+              :ripple="false"
+            >
               {{ link.label }}
             </v-btn>
           </router-link>
@@ -42,6 +45,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
 const { links } = {
   links: [
     // {
