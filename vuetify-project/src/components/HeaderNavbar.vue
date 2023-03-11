@@ -7,15 +7,21 @@
         @click="onChangeSidebarVisibility"
       ></v-app-bar-nav-icon> -->
 
-      <v-toolbar-title>Application</v-toolbar-title>
-      <!-- <v-spacer></v-spacer> -->
+      <router-link to="/">
+        <v-toolbar-title>Task tracker</v-toolbar-title>
+      </router-link>
 
-      <v-btn v-for="link in links" :key="link" variant="text">
-        <!-- <template v-if="link.url && link.label"> -->
-        <!-- <router-link :to="link.url">{{ link.label }}</router-link> -->
-        <!-- </template> -->
-        {{ link.label }}
-      </v-btn>
+      <v-spacer></v-spacer>
+
+      <template v-for="link in links" :key="link">
+        <template v-if="link.url && link.label">
+          <router-link :to="link.url">
+            <v-btn variant="text">
+              {{ link.label }}
+            </v-btn>
+          </router-link>
+        </template>
+      </template>
 
       <!-- <v-spacer></v-spacer> -->
 
@@ -46,10 +52,10 @@ const { links } = {
       url: '/backlog',
       label: 'Backlog',
     },
-    // {
-    //   url: '/board',
-    //   label: 'Board',
-    // },
+    {
+      url: '/board',
+      label: 'Board',
+    },
     // {
     //   url: '/reports',
     //   label: 'Reports',
