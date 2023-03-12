@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col v-for="milestone in milestones" :key="milestone" cols="12">
+      <v-col v-for="milestone in milestones" :key="milestone.id" cols="12">
         <v-card>
           <v-list lines="two">
             <v-list-subheader>
@@ -12,30 +12,46 @@
 
               <div>
                 <div v-if="milestone.estimation">
-                  estimation: {{ milestone.estimation }}
+                  estimation: {{ getHumanizedTime(milestone.estimation) }}
                 </div>
 
                 <div v-if="milestone.duration">
-                  duration: {{ milestone.duration }}
+                  duration: {{ getHumanizedTime(milestone.duration) }}
                 </div>
               </div>
             </v-list-subheader>
             <template
-              v-for="(item, index) in milestoneItems.filter(
-                (item) => item.milestoneId === milestone.id
+              v-for="(item, index) in getMilestoneItemsByMilestoneId(
+                milestone.id
               )"
               :key="item.id"
             >
               <v-list-item>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
 
-                <!-- <v-list-item-subtitle>
-                  {{item.description}}
-                </v-list-item-subtitle> -->
+                <v-list-item-subtitle>
+                  <div>
+                    <div>type: {{ item.type }}</div>
+                    <div>
+                      estimation:
+                      {{
+                        getHumanizedTime(
+                          getMilestoneTotalEstimationByMilestoneId(milestone.id)
+                        )
+                      }}
+                    </div>
+                    <div>
+                      {{ item.description }}
+                    </div>
+                  </div>
+                </v-list-item-subtitle>
               </v-list-item>
 
               <v-divider
-                v-if="index < milestoneItems.length - 1"
+                v-if="
+                  index <
+                  getMilestoneItemsByMilestoneId(milestone.id).length - 1
+                "
                 :key="`divider-${index}`"
               />
             </template>
@@ -52,12 +68,11 @@ const { milestones, milestoneItems } = {
     {
       id: 1,
       title: 'Milestone 1',
-      estimation: '4d',
-      duration: '4d',
+      duration: 4 * 24,
       isCurrent: true,
     },
-    { id: 2, title: 'Milestone 2', estimation: '1d' },
-    { id: 3, title: 'Milestone 3', estimation: '6d' },
+    { id: 2, title: 'Milestone 2' },
+    { id: 3, title: 'Milestone 3' },
   ],
   milestoneItems: [
     {
@@ -65,8 +80,8 @@ const { milestones, milestoneItems } = {
       type: 'feature',
       milestoneId: 1,
       title: 'Backlog page',
-      duration: '4d',
-      estimation: '4d',
+      duration: 4 * 24,
+      estimation: 4 * 24,
       tasks: [
         {
           id: 10,
@@ -74,7 +89,7 @@ const { milestones, milestoneItems } = {
           parentId: 1,
           milestoneId: 1,
           title: 'Backlog page markup',
-          estimation: '4h',
+          estimation: 4,
         },
         {
           id: 11,
@@ -82,7 +97,7 @@ const { milestones, milestoneItems } = {
           parentId: 1,
           milestoneId: 1,
           title: 'Backlog page display/manage items of a milestone',
-          estimation: '4h',
+          estimation: 4,
         },
         {
           id: 12,
@@ -90,7 +105,7 @@ const { milestones, milestoneItems } = {
           parentId: 1,
           milestoneId: 1,
           title: 'Backlog page save and load data from db',
-          estimation: '3d',
+          estimation: 3 * 24,
         },
       ],
     },
@@ -100,7 +115,7 @@ const { milestones, milestoneItems } = {
       type: 'feature',
       milestoneId: 2,
       title: 'Board page',
-      estimation: '1d',
+      estimation: 1 * 24,
       tasks: [
         {
           id: 20,
@@ -108,7 +123,7 @@ const { milestones, milestoneItems } = {
           parentId: 2,
           milestoneId: 2,
           title: 'Board page markup',
-          estimation: '2h',
+          estimation: 2,
         },
         {
           id: 21,
@@ -116,7 +131,7 @@ const { milestones, milestoneItems } = {
           parentId: 2,
           milestoneId: 2,
           title: 'Board page display/manage items of a board',
-          estimation: '2h',
+          estimation: 2,
         },
         {
           id: 22,
@@ -124,7 +139,7 @@ const { milestones, milestoneItems } = {
           parentId: 2,
           milestoneId: 2,
           title: 'Board page save and load data from db',
-          estimation: '4h',
+          estimation: 4,
         },
       ],
     },
@@ -134,7 +149,7 @@ const { milestones, milestoneItems } = {
       type: 'feature',
       milestoneId: 3,
       title: 'Reports page',
-      estimation: '6d',
+      estimation: 6 * 24,
       tasks: [
         {
           id: 30,
@@ -142,7 +157,7 @@ const { milestones, milestoneItems } = {
           parentId: 3,
           milestoneId: 3,
           title: 'Reports page markup',
-          estimation: '2d',
+          estimation: 2 * 24,
         },
         {
           id: 31,
@@ -150,7 +165,7 @@ const { milestones, milestoneItems } = {
           parentId: 3,
           milestoneId: 3,
           title: 'Reports page display/manage items of a board',
-          estimation: '3d',
+          estimation: 3 * 24,
         },
         {
           id: 32,
@@ -158,7 +173,7 @@ const { milestones, milestoneItems } = {
           parentId: 3,
           milestoneId: 3,
           title: 'Reports page save and load data from db',
-          estimation: '2h',
+          estimation: 2,
         },
       ],
     },
@@ -168,9 +183,60 @@ const { milestones, milestoneItems } = {
       type: 'feature',
       milestoneId: 3,
       title: 'Dashboard page',
-      estimation: '1d',
+      estimation: 1 * 24,
       tasks: [],
     },
   ],
+};
+
+const getMilestoneItemsByMilestoneId = (milestoneId: number) =>
+  milestoneItems.filter((item) => item.milestoneId === milestoneId);
+
+const getMilestoneTotalEstimationByMilestoneId = (milestoneId: number) =>
+  getMilestoneItemsByMilestoneId(milestoneId).reduce(
+    (curr, next) => curr + (next.estimation || 0),
+    0
+  );
+
+const getPluralWordEnding = (count: number) => (count > 1 ? 's' : '');
+
+const getHumanizedTime = (
+  hoursOriginalValue: number,
+  options //= { hoursInDay: 8, daysInWeek: 5 }
+) => {
+  const { hoursInDay, daysInWeek } = options || {
+    hoursInDay: 8,
+    daysInWeek: 5,
+  };
+
+  let hours = hoursOriginalValue;
+  let weeks = 0;
+
+  const hoursInWeek = hoursInDay * daysInWeek;
+  if (hours >= hoursInWeek) {
+    weeks = Math.trunc(hours / hoursInWeek);
+    hours = hours - weeks * hoursInWeek;
+  }
+
+  let days = 0;
+  if (hours >= hoursInDay) {
+    days = Math.trunc(hours / hoursInDay);
+    hours = hours - days * hoursInDay;
+  }
+
+  hours = hours % hoursInDay;
+
+  let humanizedTimeString = [];
+  if (weeks > 0) {
+    humanizedTimeString.push(`${weeks} week${getPluralWordEnding(weeks)}`);
+  }
+  if (days > 0) {
+    humanizedTimeString.push(`${days} day${getPluralWordEnding(days)}`);
+  }
+  if (hours > 0) {
+    humanizedTimeString.push(`${hours} hour${getPluralWordEnding(hours)}`);
+  }
+
+  return humanizedTimeString.join(' ');
 };
 </script>
