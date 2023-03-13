@@ -1,57 +1,22 @@
 <template>
   <v-container fluid>
-    <!-- <v-row>
-      <v-col class="pt-0 pb-0">
-        <h1 class="text-h5 font-weight-medium text-medium-emphasis">Backlog</h1>
-      </v-col>
-    </v-row> -->
     <v-row>
       <v-col cols="12">
-        <v-list
-          v-for="(task, index) in tasks"
-          :key="task.id"
-          lines="two"
-          class="mt-n2 mb-n2 flex"
-          rounded
-        >
-          <v-list-item>
-            <v-list-item-title>
-              <span class="font-weight-medium">TASK-{{ task.id }}</span>
-              {{ task.title }}
-            </v-list-item-title>
+        <h2 class="text-h6 font-weight-regular mt-n2 mb-3">Backlog</h2>
 
-            <v-list-item-subtitle>
-              <div>type: {{ task.type }}</div>
-              <div>
-                estimation:
-                {{ getHumanizedTime(task.estimation) }}
-              </div>
-            </v-list-item-subtitle>
+        <TaskList :tasks="tasks" />
 
-            <!-- <v-list-item-subtitle>
-              <div v-if="task.subtasks?.length">
-                {{ task.subtasks?.length }}
-                subtask{{ getPluralWordEnding(task.subtasks?.length || 0) }}
-              </div>
-              <div v-if="!task.subtasks?.length">no subtasks</div>
-            </v-list-item-subtitle> -->
+        <h2 class="text-h6 font-weight-regular mt-6 mb-3">In progress</h2>
 
-            <!-- <div>
-              {{ task.description }}
-            </div> -->
-          </v-list-item>
-
-          <v-divider
-            v-if="index < tasks.length - 1"
-            :key="`divider-${index}`"
-          />
-        </v-list>
+        <TaskList :tasks="tasks" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import TaskList from '@/components/TaskList';
+
 const { milestones, milestoneItems } = {
   milestones: [
     {
@@ -196,58 +161,4 @@ const { milestones, milestoneItems } = {
 };
 
 const tasks = milestoneItems.map((item) => item.tasks).flat(1);
-
-const getTasksByFeatureId = (featureId: number) =>
-  tasks.filter((task) => task.featureId === featureId);
-
-const getMilestoneItemsByMilestoneId = (milestoneId: number) =>
-  milestoneItems.filter((item) => item.milestoneId === milestoneId);
-
-const getMilestoneTotalEstimationByMilestoneId = (milestoneId: number) =>
-  getMilestoneItemsByMilestoneId(milestoneId).reduce(
-    (curr, next) => curr + (next.estimation || 0),
-    0
-  );
-
-const getPluralWordEnding = (count: number) => (count > 1 ? 's' : '');
-
-const getHumanizedTime = (
-  hoursOriginalValue: number,
-  options //= { hoursInDay: 8, daysInWeek: 5 }
-) => {
-  const { hoursInDay, daysInWeek } = options || {
-    hoursInDay: 8,
-    daysInWeek: 5,
-  };
-
-  let hours = hoursOriginalValue;
-  let weeks = 0;
-
-  const hoursInWeek = hoursInDay * daysInWeek;
-  if (hours >= hoursInWeek) {
-    weeks = Math.trunc(hours / hoursInWeek);
-    hours = hours - weeks * hoursInWeek;
-  }
-
-  let days = 0;
-  if (hours >= hoursInDay) {
-    days = Math.trunc(hours / hoursInDay);
-    hours = hours - days * hoursInDay;
-  }
-
-  hours = hours % hoursInDay;
-
-  let humanizedTimeString = [];
-  if (weeks > 0) {
-    humanizedTimeString.push(`${weeks} week${getPluralWordEnding(weeks)}`);
-  }
-  if (days > 0) {
-    humanizedTimeString.push(`${days} day${getPluralWordEnding(days)}`);
-  }
-  if (hours > 0) {
-    humanizedTimeString.push(`${hours} hour${getPluralWordEnding(hours)}`);
-  }
-
-  return humanizedTimeString.join(' ');
-};
 </script>
