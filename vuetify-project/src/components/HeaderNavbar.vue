@@ -15,7 +15,10 @@
 
       <template v-for="link in links" :key="link">
         <template v-if="link.url && link.label">
-          <router-link :to="link.url">
+          <router-link
+            :to="link.url"
+            class="text-decoration-none text-high-emphasis"
+          >
             <v-btn
               :variant="route.path === link.url ? 'tonal' : 'text'"
               :ripple="false"
@@ -55,6 +58,10 @@ const { links } = {
     //   url: '/',
     //   label: 'Home',
     // },
+    {
+      url: '/goals',
+      label: 'Goals',
+    },
     {
       url: '/backlog',
       label: 'Backlog',
