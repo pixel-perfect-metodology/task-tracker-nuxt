@@ -47,6 +47,13 @@ const { milestones, milestoneItems } = {
           estimation: 4,
         },
         {
+          id: 102,
+          type: 'bug',
+          milestoneId: 1,
+          title: 'App name in navigation panel markup has incorrect style',
+          estimation: 1,
+        },
+        {
           id: 10,
           type: 'task',
           featureId: 1,

@@ -7,7 +7,7 @@
         @click="onChangeSidebarVisibility"
       ></v-app-bar-nav-icon> -->
 
-      <router-link to="/">
+      <router-link to="/" class="text-decoration-none text-high-emphasis">
         <v-toolbar-title>Task tracker</v-toolbar-title>
       </router-link>
 
