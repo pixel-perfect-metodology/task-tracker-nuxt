@@ -1,9 +1,10 @@
 <template>
   <v-container fluid class="fill-height d-flex align-start">
     <v-row
-      class="d-flex align-start"
+      class="d-flex align-start flex-column"
       style="flex-wrap: nowrap; overflow-x: scroll"
     >
+      <!-- // todo add  flex-sm-column - as analog flex-column for sm media-query -->
       <template v-for="columnName in columns" :key="columnName">
         <v-col
           cols="auto"
@@ -22,10 +23,7 @@
             {{ columnName }}
           </h2>
 
-          <div
-            
-            style="position: absolute"
-          >
+          <div style="position: absolute">
             <v-sheet
               class="pa-2 bg-grey-lighten-3 text-disabled"
               min-height="150"
