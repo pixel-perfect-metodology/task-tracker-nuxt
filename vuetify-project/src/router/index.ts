@@ -35,17 +35,17 @@ const routes = [
   },
 
   {
-    path: '/backlog',
+    path: '/list',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
-        name: 'Backlog',
+        name: 'TaskList',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(/* webpackChunkName: "backlog" */ '@/views/Backlog.vue'),
+          import(/* webpackChunkName: "task-list" */ '@/views/TaskList.vue'),
       },
     ],
   },

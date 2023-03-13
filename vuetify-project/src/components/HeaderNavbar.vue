@@ -63,8 +63,8 @@ const { links } = {
       label: 'Goals',
     },
     {
-      url: '/backlog',
-      label: 'Backlog',
+      url: '/list',
+      label: 'List',
     },
     {
       url: '/board',
