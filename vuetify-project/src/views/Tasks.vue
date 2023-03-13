@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <FilterByTaskStatus
+      @change="onChangeFilterTaskStatus"
+      :status="filter?.status || 'ALL'"
+    />
+
     <v-row>
       <v-col cols="12">
         <h2 class="text-h6 font-weight-regular mt-n2 mb-3">Backlog</h2>
@@ -15,7 +20,17 @@
 </template>
 
 <script setup lang="ts">
+import FilterByTaskStatus from '@/components/FilterByTaskStatus';
 import TaskList from '@/components/TaskList';
+
+const filter = {
+  status: '',
+};
+
+const onChangeFilterTaskStatus = (newStatus) => {
+  filter.status = newStatus;
+  console.log({ newStatus, filter });
+};
 
 const { milestones, milestoneItems } = {
   milestones: [

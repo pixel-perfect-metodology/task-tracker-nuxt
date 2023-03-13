@@ -3,7 +3,7 @@
     <v-col class="mt-1" cols="auto">
       <strong>Filter by status:</strong>
     </v-col>
-    <v-col>
+    <v-col cols="auto">
       <template v-for="statusName in statusNames">
         <v-chip
           class="mr-2"
