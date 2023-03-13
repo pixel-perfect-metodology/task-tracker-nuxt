@@ -1,6 +1,18 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-col class="d-flex justify-end text-medium-emphasis pt-1 pb-0">
+        <div class="d-flex">
+          <div class="ml-4">
+            <small> day - it's work day (8 hours) </small>
+          </div>
+          <div class="ml-4">
+            <small> week - it's work week (5 days) </small>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col v-for="milestone in milestones" :key="milestone.id" cols="12">
         <v-card>
           <v-list lines="two">
@@ -11,8 +23,13 @@
               </h3>
 
               <div>
-                <div v-if="milestone.estimation">
-                  estimation: {{ getHumanizedTime(milestone.estimation) }}
+                <div>
+                  estimation:
+                  {{
+                    getHumanizedTime(
+                      getMilestoneTotalEstimationByMilestoneId(milestone.id)
+                    )
+                  }}
                 </div>
 
                 <div v-if="milestone.duration">
@@ -30,21 +47,24 @@
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
 
                 <v-list-item-subtitle>
+                  <div>type: {{ item.type }}</div>
                   <div>
-                    <div>type: {{ item.type }}</div>
-                    <div>
-                      estimation:
-                      {{
-                        getHumanizedTime(
-                          getMilestoneTotalEstimationByMilestoneId(milestone.id)
-                        )
-                      }}
-                    </div>
-                    <div>
-                      {{ item.description }}
-                    </div>
+                    estimation:
+                    {{ getHumanizedTime(item.estimation) }}
                   </div>
                 </v-list-item-subtitle>
+
+                <v-list-item-subtitle>
+                  <div v-if="item.tasks?.length">
+                    {{ item.tasks?.length }}
+                    task{{ getPluralWordEnding(item.tasks?.length || 0) }}
+                  </div>
+                  <div v-if="!item.tasks?.length">no tasks</div>
+                </v-list-item-subtitle>
+
+                <div>
+                  {{ item.description }}
+                </div>
               </v-list-item>
 
               <v-divider

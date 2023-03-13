@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar flat>
-    <v-container class="fill-height d-flex align-center">
+  <v-app-bar flat density="compact">
+    <v-container class="d-flex align-center">
       <!-- <v-avatar class="me-10 ms-4" color="grey-darken-1" size="32"></v-avatar> -->
 
       <!-- <v-app-bar-nav-icon
