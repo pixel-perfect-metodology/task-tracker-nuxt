@@ -23,7 +23,7 @@
           </h2>
 
           <div
-            class="fill-height d-flex flex-column"
+            
             style="position: absolute"
           >
             <v-sheet
