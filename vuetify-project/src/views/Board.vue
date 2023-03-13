@@ -1,11 +1,31 @@
 <template>
   <v-container fluid class="fill-height d-flex align-start">
-    <v-row class="fill-height d-flex align-start">
+    <v-row
+      class="d-flex align-start"
+      style="flex-wrap: nowrap; overflow-x: scroll"
+    >
       <template v-for="columnName in columns" :key="columnName">
-        <v-col cols="2" class="fill-height">
-          <strong style="text-transform: capitalize">{{ columnName }}</strong>
+        <v-col
+          cols="auto"
+          xl="2"
+          lg="3"
+          md="4"
+          sm="6"
+          xs="12"
+          class="fill-height"
+          style="position: relative"
+        >
+          <h2
+            class="text-h6 font-weight-medium"
+            style="text-transform: capitalize !important"
+          >
+            {{ columnName }}
+          </h2>
 
-          <div style="position: absolute">
+          <div
+            class="fill-height d-flex flex-column"
+            style="position: absolute"
+          >
             <v-sheet
               class="pa-2 bg-grey-lighten-3 text-disabled"
               min-height="150"
