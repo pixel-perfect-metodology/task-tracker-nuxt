@@ -47,17 +47,37 @@
             class="fill-height d-flex flex-column"
           >
             <template #item="{ element: task, index }">
-              <v-sheet class="mb-2" min-height="150" rounded>
+              <v-sheet
+                class="mb-2"
+                min-height="150"
+                rounded
+                :style="task.isDraft ? 'border: 1px dashed gray;' : ''"
+              >
                 <template
                   v-if="['in progress', 'blocked'].includes(columnName)"
                 >
                   <v-progress-linear :model-value="task.progress" />
                 </template>
-                <div class="pa-2">
-                  <b
-                    ><sub> Task-{{ task.id }} </sub></b
-                  >
+                <div v-if="!task.isDraft" class="pa-2">
+                  <b>
+                    <sub> Task-{{ task.id }} </sub>
+                  </b>
                   {{ task.title }}
+                </div>
+                <div
+                  v-if="task.isDraft"
+                  class="pa-2"
+                  style="position: relative; height: 100%"
+                >
+                  <div
+                    class="d-flex justify-center align-center text-disabled"
+                    style="position: absolute; inset: 0; height: 100%"
+                  >
+                    <div class="text-h6" style="">New task</div>
+                  </div>
+                  <div>
+                    {{ task.title }}
+                  </div>
                 </div>
               </v-sheet>
             </template>
@@ -78,6 +98,10 @@ const { columns, tasks } = {
       { id: 5, title: 'create markup for reports page' },
       { id: 6, title: 'create demo data for backlog page' },
       { id: 7, title: 'create demo data for board page' },
+      {
+        title: '<user role> need <goal> for/to <benefit>',
+        isDraft: true,
+      },
     ],
     blocked: [{ id: 4, title: 'create markup for reports page', progress: 10 }],
     ['in progress']: [
