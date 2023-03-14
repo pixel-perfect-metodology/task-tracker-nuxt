@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="fill-height d-flex align-start pb-0">
+  <v-container fluid class="d-flex align-start pb-0" style="min-height: 100%">
     <v-row
       class="d-flex align-start flex-xs-column-and-down"
       style="
@@ -17,7 +17,13 @@
           md="4"
           sm="6"
           xs="12"
-          style="position: relative; min-height: 100%"
+          style="
+            position: relative;
+            height: 100%;
+            width: 100%;
+            min-height: 150px;
+            min-width: 150px;
+          "
         >
           <h2
             class="text-h6 font-weight-medium"
@@ -27,12 +33,7 @@
           </h2>
 
           <div style="position: absolute">
-            <v-sheet
-              class="pa-2 bg-grey-lighten-3 text-disabled"
-              min-height="150"
-              mi-width="150"
-              rounded
-            >
+            <v-sheet rounded class="pa-2 bg-grey-lighten-3 text-disabled">
               <sub> no tasks </sub>
             </v-sheet>
           </div>
@@ -47,39 +48,44 @@
             class="fill-height d-flex flex-column"
           >
             <template #item="{ element: task, index }">
-              <v-sheet
-                class="mb-2"
-                min-height="150"
-                rounded
-                :style="task.isDraft ? 'border: 1px dashed gray;' : ''"
-              >
-                <template
-                  v-if="['in progress', 'blocked'].includes(columnName)"
-                >
-                  <v-progress-linear :model-value="task.progress" />
+              <div>
+                <template v-if="!task.isDraft">
+                  <v-sheet class="mb-2" min-height="150" rounded>
+                    <template
+                      v-if="['in progress', 'blocked'].includes(columnName)"
+                    >
+                      <v-progress-linear :model-value="task.progress" />
+                    </template>
+                    <div v-if="!task.isDraft" class="pa-2">
+                      <span class="font-weight-medium">
+                        TASK-{{ task.id }}
+                      </span>
+                      {{ task.title }}
+                    </div>
+                  </v-sheet>
                 </template>
-                <div v-if="!task.isDraft" class="pa-2">
-                  <b>
-                    <sub> Task-{{ task.id }} </sub>
-                  </b>
-                  {{ task.title }}
-                </div>
-                <div
-                  v-if="task.isDraft"
-                  class="pa-2"
-                  style="position: relative; height: 100%"
-                >
-                  <div
-                    class="d-flex justify-center align-center text-disabled"
-                    style="position: absolute; inset: 0; height: 100%"
+
+                <template v-if="task.isDraft">
+                  <v-sheet
+                    class="mb-2 d-flex"
+                    min-height="150"
+                    rounded
+                    style="border: 1px dashed gray; width: 100%"
                   >
-                    <div class="text-h6" style="">New task</div>
-                  </div>
-                  <div>
-                    {{ task.title }}
-                  </div>
-                </div>
-              </v-sheet>
+                    <div class="pa-2" style="position: relative; width: 100%">
+                      <div
+                        class="d-flex justify-center align-center text-disabled"
+                        style="position: absolute; inset: 0; height: 100%"
+                      >
+                        <div class="text-h6">New task</div>
+                      </div>
+                      <div>
+                        {{'<user role> need <goal> for/to <benefit>'}}
+                      </div>
+                    </div>
+                  </v-sheet>
+                </template>
+              </div>
             </template>
           </draggable>
         </v-col>
